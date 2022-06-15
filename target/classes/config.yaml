@@ -1,0 +1,13 @@
+http:
+  "host": "0.0.0.0"
+  "port": "8081"
+  
+moviesdb:
+  "host": "bmsdb.cvrmbyao6xi0.eu-west-1.rds.amazonaws.com"
+  "port": "1433"
+  "user": "admin"
+  "password": "admin1234"
+  "dbname": "MyDB"
+  
+file:
+  TicketDR: "C:/studio-workspace/BMS-shalloo-nandini/Ticket"

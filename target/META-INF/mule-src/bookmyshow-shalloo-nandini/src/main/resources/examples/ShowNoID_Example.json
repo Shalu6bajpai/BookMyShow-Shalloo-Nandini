@@ -1,0 +1,9 @@
+{
+  "MovieName": "Spider Man", 
+  "ShowStartTime": "2021-10-20T09:00:00.000Z",
+  "ShowEndTime": "2021-10-20T12:00:00.000Z",
+  "SeatType": "Gold",
+  "AvailableSeats": 150,
+  "language": "hindi",
+  "Price": 380
+}

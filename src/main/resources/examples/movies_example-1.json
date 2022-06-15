@@ -1,0 +1,14 @@
+[
+  {
+    "MovieID": "MV100",
+    "MovieName": "Avenger",
+    "MovieDescription": "It is a Marvel movie",
+    "Price": 500
+  },
+  {
+    "MovieID": "MV101",
+    "MovieName": "Fast & Furious",
+    "MovieDescription": "Thriller, Action",
+    "Price": 600
+  }
+]

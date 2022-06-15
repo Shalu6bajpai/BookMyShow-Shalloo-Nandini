@@ -1,0 +1,10 @@
+{
+    "MovieName": "Jug Jug Jiyo",
+    "Audi": 15,
+    "date": "26/05/2022",
+    "Time": "15:00",
+    "Seats": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+    "Price": 200,
+    "discount": 10,
+    "TotalPrice": 2700
+}

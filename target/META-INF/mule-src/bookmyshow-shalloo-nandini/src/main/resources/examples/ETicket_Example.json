@@ -1,0 +1,9 @@
+{
+    "MovieName": "Bhool Bhulaiya 2",
+    "Audi": 4,
+    "date": "26/05/2022",
+    "Time": "15:00",
+    "Seats": [1,2,3,4],
+    "Price": 200,
+    "TotalPrice": 800
+}

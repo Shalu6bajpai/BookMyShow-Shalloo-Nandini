@@ -1,0 +1,14 @@
+%dw 2.0
+
+type auto_255fd8c2_80a4_4f72_bf16_1d05ece19cab_Input_Payload = {
+  MovieName: String, 
+  ShowEndTime: String, 
+  Price: Number, 
+  ShowID: String, 
+  SeatType: String, 
+  ShowStartTime: String, 
+  language?: String, 
+  AvailableSeats: Number, 
+  _?: Any
+}
+

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="GetMovies-suite.xml" />
+	<munit:test name="GetMovies-test" doc:id="f1817f9d-9535-4888-b855-02d15b6d8992" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="1d5c4e2c-9ba9-42b5-b842-d2182908629a" >
+				<munit:payload value="#[readUrl('classpath://GetMoviestest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMoviestest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMoviestest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovies" doc:id="0d34fa52-1ec7-48ae-bf51-527f1be64fef" name="GetMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="08301eb5-369a-48a0-801e-ee1966b73570" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMoviestest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GetMoviesWithMovieName-test" doc:id="42aedcc5-cd9b-4e63-89ab-105bf640543b" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="98eef778-d568-4c6b-b8b3-b77b49c14f5d" >
+				<munit:payload value="#[readUrl('classpath://GetMoviestest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMoviestest1\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMoviestest1\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovies" doc:id="cea0dc43-6f9c-4d2b-8f7c-d2c6cb8804dc" name="GetMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="345886ec-d012-45e2-a8c2-a785c91fee1c" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMoviestest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GetMoviesWrongMovieName-test" doc:id="fec6c3b6-88fb-4d22-aa08-274ffb8f01f1" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="d774ecbf-3143-4517-8ec9-4273b02ed66f" >
+				<munit:payload value="#[readUrl('classpath://GetMoviestest2\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMoviestest2\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMoviestest2\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovies" doc:id="94726b2e-dd24-4e93-8501-c69bb8de9924" name="GetMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="8ffe9357-5dc1-4060-9dc4-e0b238d4cef7" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMoviestest2::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GetMovieByID-test" doc:id="9bec3597-61ca-4aa4-908a-23cf0da93cf8" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="4789a507-dcc6-4774-9358-fb0616ec954a" >
+				<munit:payload value="#[readUrl('classpath://GetMovieByIDtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMovieByIDtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMovieByIDtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovieByID" doc:id="423c9222-25c7-471e-81ab-a00c9dc6fc30" name="GetMovieByID"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e9ede127-ca51-41b2-a709-203265380e55" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMovieByIDtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GetMovieByWrongID-test" doc:id="64a50aea-d311-4833-8a51-5aaeeba90fb9" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="8fed3e25-d22b-4aca-9cce-6070a09269f7" >
+				<munit:payload value="#[readUrl('classpath://GetMovieByWrongIDtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMovieByWrongIDtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMovieByWrongIDtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovieByID" doc:id="3c98fcbb-3e4c-465b-8f56-16fbea77c6cd" name="GetMovieByID"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="563c597a-b228-4ea2-9c60-ae3b23ede10a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMovieByWrongIDtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="InsertMovies-test" doc:id="c260b3d2-2fd7-497f-8819-e9df24b886a7" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="266fd91d-8fa7-4cfc-8ecb-1f8f753da155" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://InsertMoviestest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://InsertMoviestest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://InsertMoviestest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to InsertMovies" doc:id="330d5c70-44eb-4403-a8a9-3ec96ab35395" name="InsertMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="2fc8c060-42f6-40da-84db-2970b6dd2906" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import InsertMoviestest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="DeleteMovieByID-test" doc:id="e42ef49a-71aa-4711-a6ba-0a992868ce42" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="2e4d6496-4a49-496d-a4ac-07dfa781f783" >
+				<munit:payload value="#[readUrl('classpath://DeleteMovieByIDtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://DeleteMovieByIDtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://DeleteMovieByIDtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to DeleteMovieByID" doc:id="8f1c9336-d212-4e8f-89ff-ecf11d12220b" name="DeleteMovieByID"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="096a244b-a38d-4a5c-8ddd-0a0daea9f07a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import DeleteMovieByIDtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+    
+
+</mule>

@@ -1,0 +1,15 @@
+%dw 2.0
+
+type auto_574ec34a_a4fc_4737_b022_4822b4cbe3ed_Input_Payload = {
+  date?: String, 
+  MovieName?: String, 
+  Price?: Number, 
+  Audi?: Number, 
+  TotalPrice?: Number, 
+  SeatType?: String, 
+  discount?: Number, 
+  Time?: String, 
+  Seats?: { _?: Any }, 
+  _?: Any
+}
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:rds="http://www.mulesoft.org/schema/mule/rds"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/rds http://www.mulesoft.org/schema/mule/rds/current/mule-rds.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="06c4cf81-88c6-4ee4-95b3-0961cc6fa3e3" file="config.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0450a320-f4b8-4e3b-b226-a90a2ae0903a" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="81487600-f871-4c8d-b757-b5cc615d4a5e" >
+		<db:mssql-connection host="${moviesdb.host}" port="${moviesdb.port}" user="${moviesdb.user}" password="${moviesdb.password}" databaseName="${moviesdb.dbname}" />
+	</db:config>
+	<api-gateway:autodiscovery apiId="17875758" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2daf961d-6ea8-4a61-a324-b0ebbf0b3124" flowRef="bookmyshow-shalloo-nandini-main" />
+	<configuration doc:name="Configuration" doc:id="8237ef2f-1909-4b29-a054-c916d7eb8cf7" defaultErrorHandler-ref="globalError_Handler" />
+	<file:config name="File_Config" doc:name="File Config" doc:id="8f3c1abc-da49-4e2a-b4e2-d0490d20aaf0" >
+		<file:connection workingDir="${file.TicketDR}" />
+	</file:config>
+	<error-handler name="globalError_Handler" doc:id="df22ed49-ec3e-4bd9-adeb-ea29150d3198" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="bd9c25de-5a37-43cd-bb57-93e94ace3ec0" type="DB:QUERY_EXECUTION">
+				<ee:transform doc:name="MovieID Already exist" doc:id="99a35d83-d7e2-4599-bb05-4dbbe4143c2f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Movie ID:"++ payload.MovieID ++ " is Already exist!"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="e77ed049-d6bc-4d65-a3bf-93d7e45c1abe" variableName="httpStatus"/>
+			
+</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="831a64bd-65f2-4f79-8f38-9b444d4f73ac" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="625d9663-f01a-41a4-a1de-3dabb9e769cb">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.description 
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+	</error-handler>
+</mule>

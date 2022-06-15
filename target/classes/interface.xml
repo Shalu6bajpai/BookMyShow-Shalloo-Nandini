@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <apikit:config name="bookmyshow-shalloo-nandini-config" api="resource::4c2825dd-e397-4b98-8eb5-fdf4c967c16e:bookmyshow-shalloo-nandini:1.1.4:raml:zip:bookmyshow-shalloo-nandini.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" disableValidations="true"/>
+    <flow name="bookmyshow-shalloo-nandini-main">
+        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="bookmyshow-shalloo-nandini-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="bookmyshow-shalloo-nandini-console">
+        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="bookmyshow-shalloo-nandini-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="put:\movies\(movie_id):application\json:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="47238da4-34fd-4fb2-93a0-075b6256e0b4" name="UpdateMovieByID" />
+    </flow>
+    <flow name="put:\shows\(shows_id):application\json:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="c212d2e3-99b2-440c-9d33-34fe92bfafb1" name="UpdateShowByID" />
+    </flow>
+    <flow name="delete:\movies\(movie_id):bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="7282b5e1-4dae-4d06-a4a6-2348ed5bee71" name="DeleteMovieByID" />
+    </flow>
+    <flow name="delete:\shows\(shows_id):bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="96c8fee8-0384-4152-a66d-703d48ea44b3" name="DeleteShowByID" />
+    </flow>
+    <flow name="get:\movies:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="eeb93217-ac6c-4b70-9ba6-67cf5c56e24e" name="GetMovies" />
+    </flow>
+    <flow name="get:\shows:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="9207cd76-bf07-4f6b-80bc-03169cd5ae25" name="GetShows" />
+    </flow>
+    <flow name="get:\movies\(movie_id):bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="d4070293-1a28-436c-89ad-da07c0ca8cba" name="GetMovieByID" />
+    </flow>
+    <flow name="get:\shows\(shows_id):bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="6b8795e6-5fe4-4632-9f9e-734a06afdb92" name="GetShowByID" />
+    </flow>
+    <flow name="post:\movies:application\json:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="518ffd07-a7f9-4448-8980-26367f112254" name="InsertMovies" />
+    </flow>
+    <flow name="post:\shows:application\json:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="639b27e0-2f49-428d-ba23-4e8c921ecca6" name="AddShow" />
+    </flow>
+    <flow name="put:\book:application\json:bookmyshow-shalloo-nandini-config" doc:id="64990ed5-9122-4da4-a8f3-fbceef37bc84">
+        <flow-ref doc:name="Flow Reference" doc:id="ad9747e9-6a0e-4bfb-9201-6c809577628b" name="BookTicket" />
+    </flow>
+    <flow name="post:\book:application\json:bookmyshow-shalloo-nandini-config">
+        <flow-ref doc:name="Flow Reference" doc:id="5055184d-97cb-4f2b-a8d4-2c6eccb005b2" name="BookTicket" />
+    </flow>
+</mule>

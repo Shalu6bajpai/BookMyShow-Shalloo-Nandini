@@ -1,0 +1,14 @@
+%dw 2.0
+
+type auto_be9c6fd0_cb64_4656_a3b4_3c85db390414_Input_Payload = {
+  MovieName: String, 
+  ShowEndTime: String, 
+  Price: Number, 
+  ShowID: String, 
+  SeatType: String, 
+  ShowStartTime: String, 
+  language?: String, 
+  AvailableSeats: Number, 
+  _?: Any
+}
+
